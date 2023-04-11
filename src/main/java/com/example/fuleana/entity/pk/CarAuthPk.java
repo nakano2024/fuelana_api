@@ -9,10 +9,11 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 @Embeddable
 @AllArgsConstructor
-public class CarAuthPk {
+public class CarAuthPk implements Serializable {
 
     @Column(name = "user_id")
     private Long userId;

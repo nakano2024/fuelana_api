@@ -30,8 +30,8 @@ public class Car {
     @JoinColumn(name = "fuel_type_id")
     private FuelType fuelType;
 
-    @Column(name = "mileage_per_liter")
-    private Float mileagePerLiter;
+    @Column(name = "kilometers_per_liter")
+    private Float kilometersPerLiter;
 
     @Column(name = "is_deleted")
     private boolean isDeleted;
@@ -41,8 +41,5 @@ public class Car {
 
     @Column(name = "updated_at")
     private Timestamp updatedAt;
-
-    @OneToMany(mappedBy = "car")
-    private List<CarAuth> carAuths;
 
 }

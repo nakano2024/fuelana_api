@@ -14,6 +14,8 @@ import java.sql.Timestamp;
 @Entity
 public class FuelPrice {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "fuel_price_id")
     private Long fuelPriceId;
 
@@ -21,8 +23,8 @@ public class FuelPrice {
     @JoinColumn(name = "fuel_type_id")
     private FuelType fuelType;
 
-    @Column(name = "price_per_liter")
-    private Float pricePerLiter;
+    @Column(name = "yen_per_liter")
+    private Float yenPerLiter;
 
     @Column(name = "created_at")
     private Timestamp createdAt;

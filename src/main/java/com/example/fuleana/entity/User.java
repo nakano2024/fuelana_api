@@ -48,7 +48,4 @@ public class User {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<CarAuth> carAuths;
-
 }
