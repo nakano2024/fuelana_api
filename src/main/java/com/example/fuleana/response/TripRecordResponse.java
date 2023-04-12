@@ -9,9 +9,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class TripRecordResponse {
 
-    private String purposeName;
-    private Float totalYen;
-    private Float totalKilometers;
-    private Timestamp createdAt;
+    private String purpose_name;
+    private Float total_yen;
+    private Float total_kilometers;
+    private Timestamp created_at;
 
 }

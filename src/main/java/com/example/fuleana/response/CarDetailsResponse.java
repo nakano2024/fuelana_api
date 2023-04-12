@@ -8,7 +8,7 @@ import lombok.Data;
 public class CarDetailsResponse {
 
     private String discription;
-    private String fuelTypeName;
-    private Float kilometersPerLiter;
+    private String fuel_type_name;
+    private Float kilometers_per_liter;
 
 }

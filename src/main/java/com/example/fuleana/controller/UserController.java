@@ -20,9 +20,8 @@ public class UserController {
 
     @PostMapping("/user/create")
     public ResponseEntity<?> createUser(@RequestBody UserRequest req){
-        User user = userService
-                .createUser(req.getName() , req.getEmail() , req.getPassword(), roleService.getRoleByPk(1L));
-        return ResponseEntity.ok(user);
+        userService.createUser(req.getName() , req.getEmail() , req.getPassword(), roleService.getRoleByPk(1L));
+        return ResponseEntity.ok("");
     }
 
     @GetMapping("/me")

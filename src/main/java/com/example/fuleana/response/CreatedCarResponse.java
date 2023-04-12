@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class CreatedCarResponse {
 
-    private String carId;
+    private String car_id;
 
 }

@@ -5,9 +5,11 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class CarIndexResponse {
+public class AuthenticatedUserResponse {
 
-    private String car_id;
-    private String discription;
+    String name;
+    String email;
+    String role_name;
+    boolean is_blocked;
 
 }
