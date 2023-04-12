@@ -2,7 +2,6 @@ package com.example.fuleana.service;
 
 import com.example.fuleana.entity.Car;
 import com.example.fuleana.entity.FuelType;
-import com.example.fuleana.entity.User;
 import com.example.fuleana.repository.CarRepository;
 import com.example.fuleana.utility.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class CarServiceImpl implements CarService{
     IdGenerator idGenerator;
 
     @Override
-    public void createCar(String discription,@NotNull FuelType fuelType, Float kilometersPerLiter) {
+    public Car createCar(String discription,@NotNull FuelType fuelType, Float kilometersPerLiter) {
         Car car = new Car();
         String altId = "";
         do{
@@ -37,7 +36,7 @@ public class CarServiceImpl implements CarService{
         car.setKilometersPerLiter(kilometersPerLiter);
         car.setDeleted(false);
         car.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        carRepository.save(car);
+        return carRepository.save(car);
     }
 
     @Override

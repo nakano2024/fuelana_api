@@ -11,7 +11,6 @@ import java.util.List;
 public interface CarAuthRepository extends JpaRepository<CarAuth , CarAuthPk> {
 
     List<CarAuth> findByUser(User user);
-
     List<CarAuth> findByCar(Car car);
 
 }

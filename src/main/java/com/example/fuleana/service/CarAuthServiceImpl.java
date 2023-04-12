@@ -19,6 +19,17 @@ public class CarAuthServiceImpl implements CarAuthService{
     CarAuthRepository carAuthRepository;
 
     @Override
+    public CarAuth createCarAuth(@NotNull User user, @NotNull Car car, final boolean isWrite, final boolean isDelete) {
+        CarAuth carAuth = new CarAuth();
+        carAuth.setCarAuthId(new CarAuthPk(user.getUserId(), car.getCarId()));
+        carAuth.setUser(user);
+        carAuth.setCar(car);
+        carAuth.setWrite(isWrite);
+        carAuth.setDelete(isDelete);
+        return carAuth;
+    }
+
+    @Override
     public List<CarAuth> getCarAuthsByUser(@NotNull User user) {
         List<CarAuth> carAuths = carAuthRepository.findByUser(user);
         return carAuths;
@@ -31,8 +42,29 @@ public class CarAuthServiceImpl implements CarAuthService{
     }
 
     @Override
-    public void validateUser(@NotNull User user, @NotNull Car car) {
+    public CarAuth getCarAuthByUserAndCar(User user, Car car) {
         CarAuth carAuth = carAuthRepository.findById(new CarAuthPk(user.getUserId() , car.getCarId()))
                 .orElseThrow(()-> new AccessDeniedException("You don't have the required permissions to access this resource."));
+        return carAuth;
+    }
+
+    @Override
+    public void validateHasAuth(@NotNull User user, @NotNull Car car) {
+        CarAuth carAuth = carAuthRepository.findById(new CarAuthPk(user.getUserId() , car.getCarId()))
+                .orElseThrow(()-> new AccessDeniedException("You don't have the required permissions to access this resource."));
+    }
+
+    @Override
+    public void validateHasWrite(@NotNull CarAuth carAuth) {
+        if(!carAuth.isWrite()){
+            throw new AccessDeniedException("You don't have the required permissions to write this resource.");
+        }
+    }
+
+    @Override
+    public void validateHasDelete(@NotNull CarAuth carAuth) {
+        if(!carAuth.isDelete()){
+            throw new AccessDeniedException("You don't have the required permissions to delete this resource.");
+        }
     }
 }

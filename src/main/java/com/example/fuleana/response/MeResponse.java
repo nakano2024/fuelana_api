@@ -1,4 +1,4 @@
 package com.example.fuleana.response;
 
-public class LoginUser {
+public class MeResponse {
 }

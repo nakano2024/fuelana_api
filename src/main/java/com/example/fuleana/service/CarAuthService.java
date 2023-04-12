@@ -9,8 +9,12 @@ import java.util.List;
 
 public interface CarAuthService {
 
+    CarAuth createCarAuth(User user, Car car, boolean isWrite, boolean isDelete);
     List<CarAuth> getCarAuthsByUser(User user);
     List<CarAuth> getCarAuthsByCar(Car car);
-    void validateUser(User user , Car car);
+    CarAuth getCarAuthByUserAndCar(User user, Car car);
+    void validateHasAuth(User user , Car car);
+    void validateHasWrite(CarAuth carAuth);
+    void validateHasDelete(CarAuth carAuth);
 
 }

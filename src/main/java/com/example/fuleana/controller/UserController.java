@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> test(Authentication auth){
-        User user = userService.getMe(auth);
+    public ResponseEntity<?> getAuthenticatedUser(Authentication auth){
+        User user = userService.getAuthenticatedUser(auth);
         return ResponseEntity.ok(user);
     }
 

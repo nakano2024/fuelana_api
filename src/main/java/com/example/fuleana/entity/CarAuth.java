@@ -25,9 +25,6 @@ public class CarAuth {
     @MapsId("carId")
     private Car car;
 
-    @Column(name = "is_read")
-    private boolean isRead;
-
     @Column(name = "is_write")
     private boolean isWrite;
 

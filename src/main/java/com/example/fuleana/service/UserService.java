@@ -10,7 +10,7 @@ public interface UserService {
 
     User createUser(String name , String email , String pswd , Role role);
     User getUserByPk(Long userId);
-    User getMe(Authentication auth);
+    User getAuthenticatedUser(Authentication auth);
     void updateNameByUser(User user, String newName);
     void updateEmailByUser(User user, String newEmail);
     void updatePswdByUser(User user, String newPswd);

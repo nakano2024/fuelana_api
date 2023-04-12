@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CarService {
 
-    void createCar(String discription ,FuelType fuelType, Float kilometersPerLiter);
+    Car createCar(String discription ,FuelType fuelType, Float kilometersPerLiter);
     Car getCarByAlt(String altId);
     Car getCarByPk(Long carId);
     void updateDiscriptionByCar(Car car, String newDiscription);

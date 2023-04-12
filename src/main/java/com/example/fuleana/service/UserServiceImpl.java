@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getMe(@NotNull Authentication auth) {
+    public User getAuthenticatedUser(@NotNull Authentication auth) {
         return null;
     }
 
