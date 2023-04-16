@@ -10,6 +10,6 @@ public class AuthenticatedUserResponse {
     String name;
     String email;
     String role_name;
-    boolean is_blocked;
+    boolean blocked;
 
 }

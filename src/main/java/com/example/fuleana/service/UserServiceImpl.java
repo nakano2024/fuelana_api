@@ -1,5 +1,6 @@
 package com.example.fuleana.service;
 
+import com.example.fuleana.entity.MyUserDetails;
 import com.example.fuleana.entity.Role;
 import com.example.fuleana.entity.User;
 import com.example.fuleana.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
@@ -58,7 +60,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getAuthenticatedUser(@NotNull Authentication auth) {
-        return null;
+        @NotNull MyUserDetails userDetails = auth.getPrincipal() instanceof MyUserDetails?
+                (MyUserDetails)auth.getPrincipal() : null;
+        final String trimmedAltId = userDetails.getAltId().trim();
+        User authenticatedUser = userRepository.findByAltId(trimmedAltId)
+                .orElseThrow(()->new EntityNotFoundException("User Not Found with ID: " + trimmedAltId));
+        return authenticatedUser;
     }
 
     @Override
