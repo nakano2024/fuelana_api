@@ -17,7 +17,7 @@ public class TripRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "trip_record_id")
-    private Long tripRecordId;
+    private long tripRecordId;
 
     @ManyToOne
     @JoinColumn(name = "car_id")
@@ -28,13 +28,13 @@ public class TripRecord {
     private Purpose purpose;
 
     @Column(name = "total_yen")
-    private Float totalYen;
+    private float totalYen;
 
     @Column(name = "total_liter")
-    private Float totalLiter;
+    private float totalLiter;
 
     @Column(name = "total_kilometers")
-    private Float totalKilometers;
+    private float totalKilometers;
 
     @Column(name = "is_deleted")
     private boolean isDeleted;

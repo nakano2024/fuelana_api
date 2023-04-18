@@ -2,7 +2,7 @@ package com.example.fuleana.request;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 
 @Data
 public class CarRequest {
@@ -11,9 +11,11 @@ public class CarRequest {
     String discription;
 
     @NotEmpty
-    String fuleTypeName;
+    @Pattern(regexp = "REGULAR|HIGH_OCTANE|DIESEL")
+    String fuelTypeName;
 
-    @NotEmpty
-    Float kilometersPerLiter;
+    @NotNull
+    @Min(0)
+    float kilometersPerLiter;
 
 }

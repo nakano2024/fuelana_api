@@ -18,7 +18,7 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
-    private Long carId;
+    private long carId;
 
     @Column(name = "alt_id")
     private String altId;
@@ -31,7 +31,7 @@ public class Car {
     private FuelType fuelType;
 
     @Column(name = "kilometers_per_liter")
-    private Float kilometersPerLiter;
+    private float kilometersPerLiter;
 
     @Column(name = "is_deleted")
     private boolean isDeleted;

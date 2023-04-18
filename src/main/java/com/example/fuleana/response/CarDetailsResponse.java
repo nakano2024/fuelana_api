@@ -9,6 +9,6 @@ public class CarDetailsResponse {
 
     private String discription;
     private String fuel_type_name;
-    private Float kilometers_per_liter;
+    private float kilometers_per_liter;
 
 }

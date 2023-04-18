@@ -17,7 +17,7 @@ public class Purpose {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "purpose_id")
-    private Long purposeId;
+    private long purposeId;
 
     @Column(name = "name")
     private String name;

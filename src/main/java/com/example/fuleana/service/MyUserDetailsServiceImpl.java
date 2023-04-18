@@ -17,7 +17,7 @@ public class MyUserDetailsServiceImpl implements MyUserDetailsService{
     @Override
     public MyUserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
         final String trimmedEmail = email.trim();
-        User user = repository.findByEmail("asean@yahoo.com".trim())
+        User user = repository.findByEmail(email.trim())
                 .orElseThrow(()-> new UsernameNotFoundException("User Not Found with Email: " + trimmedEmail));
         return new MyUserDetails(user);
     }

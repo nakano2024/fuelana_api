@@ -15,10 +15,15 @@ import com.example.fuleana.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,37 +41,45 @@ public class CarController {
     @Autowired
     FuelTypeService fts;
 
-    @PostMapping("/me/car/add")
-    public ResponseEntity<?> createCarByRequest(Authentication auth, @RequestBody CarRequest carReq){
+    @PostMapping("/me/cars/add")
+    @Transactional
+    public ResponseEntity<?> createCarByRequest(Authentication auth,@Valid @RequestBody CarRequest carReq){
         //認証ユーザーを取得する
         User authenticatedUser = us.getAuthenticatedUser(auth);
         //車を作成する
-        FuelType fuelType = fts.getFuelTypeByName(carReq.getFuleTypeName());
+        FuelType fuelType = fts.getFuelTypeByName(carReq.getFuelTypeName());
         Car createdCar = cs.createCar(carReq.getDiscription(), fuelType, carReq.getKilometersPerLiter());
         //車への権限を付与する
         cas.createCarAuth(authenticatedUser, createdCar, true , true);
         //作成した車の情報を一部レスポンスする
         CreatedCarResponse createdCarRes = new CreatedCarResponse(createdCar.getAltId());
-        return ResponseEntity.ok(createdCarRes);
+        //jsonにまとめる
+        Map<String, Object> res = new HashMap<>();
+        res.put("added_car", createdCarRes);
+        return ResponseEntity.ok(res);
     }
 
-    @GetMapping("/me/car")
+    @GetMapping("/me/cars")
     public ResponseEntity<?> getCarsByAuthenticatedUser(Authentication auth){
         User user = us.getAuthenticatedUser(auth);
         List<CarAuth> carAuths = cas.getCarAuthsByUser(user);
         List<CarIndexResponse> carIndexReses = carAuths.stream()
                 .map(carAuth -> new CarIndexResponse(carAuth.getCar().getAltId(), carAuth.getCar().getDiscription()))
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(carIndexReses);
+        Map<String, Object> res = new HashMap<>();
+        res.put("cars", carIndexReses);
+        return ResponseEntity.ok(res);
     }
 
-    @GetMapping("/me/car/{carAltId}")
+    @GetMapping("/me/cars/{carAltId}")
     public ResponseEntity<?> getCarByCarAltId(Authentication auth , @PathVariable String carAltId){
         User user = us.getAuthenticatedUser(auth);
         Car car = cs.getCarByAlt(carAltId);
         cas.validateHasAuth(user , car);
         CarDetailsResponse carDetailsRes = new CarDetailsResponse(car.getDiscription(), car.getFuelType().getName(), car.getKilometersPerLiter());
-        return ResponseEntity.ok(carDetailsRes);
+        Map<String, Object> res = new HashMap<>();
+        res.put("car", carDetailsRes);
+        return ResponseEntity.ok(res);
     }
 
 }

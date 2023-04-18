@@ -1,12 +1,18 @@
 package com.example.fuleana.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import javax.validation.constraints.*;
 
 @Data
 public class TripRecordRequest {
 
+    @NotEmpty
+    @Pattern(regexp = "BUSINESS|PRIVATE")
     private String purposeName;
-    private Float totalKilometers;
+
+    @NotNull
+    @Min(0)
+    private float totalKilometers;
 
 }
