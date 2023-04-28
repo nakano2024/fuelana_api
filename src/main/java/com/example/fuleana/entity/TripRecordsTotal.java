@@ -1,20 +1,20 @@
 package com.example.fuleana.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
 @Data
-public class TripRecordTotal {
+public class TripRecordsTotal {
 
     private Car car;
+    private Purpose purpose;
     private float grandTotalYen;
     private float grandTotalLiter;
     private float grandTotalKilometers;
 
-    public TripRecordTotal(Car car, double grandTotalYen, double grandTotalLiter, double totalKilometers){
+    public TripRecordsTotal(Car car , Purpose purpose , double grandTotalYen, double grandTotalLiter, double totalKilometers){
         this.car = car;
+        this.purpose = purpose;
         this.grandTotalYen = (float) grandTotalYen;
         this.grandTotalLiter = (float) grandTotalLiter;
         this.grandTotalKilometers = (float) totalKilometers;

@@ -2,6 +2,7 @@ package com.example.fuleana.service;
 
 import com.example.fuleana.entity.*;
 import com.example.fuleana.repository.TripRecordRepository;
+import com.example.fuleana.utility.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,9 @@ import java.util.List;
 
 @Service
 public class TripRecordServiceImpl implements TripRecordService{
+
+    @Autowired
+    IdGenerator idGenerator;
 
     @Autowired
     TripRecordRepository tripRecordRepository;
@@ -26,6 +30,11 @@ public class TripRecordServiceImpl implements TripRecordService{
         final Float totalYen = totalLiter * fuelPrice.getYenPerLiter();
 
         TripRecord tripRecord = new TripRecord();
+        String altId = "";
+        do {
+            altId = idGenerator.generate();
+        }while(tripRecordRepository.findByAltId(altId).orElse(null) != null);
+        tripRecord.setAltId(altId);
         tripRecord.setCar(car);
         tripRecord.setPurpose(purpose);
         tripRecord.setTotalYen(totalYen);
@@ -37,16 +46,23 @@ public class TripRecordServiceImpl implements TripRecordService{
     }
 
     @Override
-    public List<TripRecord> getTripRecordsByCarAndYearAndMonth(Car car,int year, int month ) {
-        List<TripRecord> tripRecords = tripRecordRepository.findByCarAndYearAndMonth(car , year, month);
+    public List<TripRecord> getTripRecordsByCarAndPurposeAndYearAndMonth(@NotNull Car car,String purposeName ,int year, int month ) {
+        List<TripRecord> tripRecords = tripRecordRepository.findByCarAndPurposeAndYearAndMonth(car, purposeName , year, month);
         return tripRecords;
     }
 
     @Override
-    public TripRecordTotal getTripRecordTotalByCarAndYearAndMonth(Car car, int year, int month) {
-        TripRecordTotal tripRecordTotal =
-                tripRecordRepository.getTripRecordTotalByCarAndYearAndMonth(car, year, month)
-                        .orElseThrow(()->new EntityNotFoundException("TripRecordTotal not found"));
+    public TripRecordsTotal getTripRecordsTotalByCarAndPurposeAndYearAndMonth(@NotNull Car car, String purposeName, int year, int month) {
+        TripRecordsTotal tripRecordTotal =
+                tripRecordRepository.getTripRecordsTotalByCarAndPurposeAndYearAndMonth(car, purposeName, year, month)
+                        .orElseThrow(()->new EntityNotFoundException("TripRecordsTotal not found"));
         return tripRecordTotal;
+    }
+
+    @Override
+    public TripRecordsTotal getTripRecordsTotalByCarAndPurposeAndYear(@NotNull Car car,String purposeName, int year) {
+        TripRecordsTotal tripRecordsTotal = tripRecordRepository.getTripRecordsTotalByCarAndPurposeAndYear(car, purposeName, year)
+                .orElseThrow(()->new EntityNotFoundException("TripRecordsTotal not found"));
+        return tripRecordsTotal;
     }
 }

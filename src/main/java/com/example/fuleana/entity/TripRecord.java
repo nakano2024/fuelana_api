@@ -19,6 +19,9 @@ public class TripRecord {
     @Column(name = "trip_record_id")
     private long tripRecordId;
 
+    @Column(name = "alt_id")
+    private String altId;
+
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;

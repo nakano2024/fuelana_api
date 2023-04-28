@@ -7,7 +7,7 @@ public class TopController {
 
     @GetMapping("/")
     public ResponseEntity test(){
-        return ResponseEntity.ok("Fuelana");
+        return ResponseEntity.ok("Fuelana!");
     }
 
 }

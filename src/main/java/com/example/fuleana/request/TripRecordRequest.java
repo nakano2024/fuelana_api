@@ -9,10 +9,10 @@ public class TripRecordRequest {
 
     @NotEmpty
     @Pattern(regexp = "BUSINESS|PRIVATE")
-    private String purposeName;
+    private String purpose_name;
 
     @NotNull
     @Min(0)
-    private float totalKilometers;
+    private float total_kilometers;
 
 }

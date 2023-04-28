@@ -24,7 +24,7 @@ public class UserController {
     @Autowired
     RoleService roleService;
 
-    @PostMapping("/user/create")
+    @PostMapping("/user/add")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserRequest req){
         userService.createUser(req.getName() , req.getEmail() , req.getPassword(), roleService.getRoleByPk(1L));
         return ResponseEntity.ok("");
@@ -34,7 +34,7 @@ public class UserController {
     public ResponseEntity<?> getAuthenticatedUser(@NotNull Authentication auth){
         User authUser = userService.getAuthenticatedUser(auth);
         AuthenticatedUserResponse response =
-                new AuthenticatedUserResponse(authUser.getName() ,authUser.getEmail(),authUser.getRole().getName(), authUser.isBlocked());
+                new AuthenticatedUserResponse(authUser.getAltId(), authUser.getName() ,authUser.getEmail(),authUser.getRole().getName(), authUser.isBlocked());
         Map<String , Object> res = new HashMap<>();
         res.put("authenticated_user" , response);
         return ResponseEntity.ok(response);

@@ -44,11 +44,12 @@ public class CarController {
     @PostMapping("/me/cars/add")
     @Transactional
     public ResponseEntity<?> createCarByRequest(Authentication auth,@Valid @RequestBody CarRequest carReq){
+
         //認証ユーザーを取得する
         User authenticatedUser = us.getAuthenticatedUser(auth);
         //車を作成する
-        FuelType fuelType = fts.getFuelTypeByName(carReq.getFuelTypeName());
-        Car createdCar = cs.createCar(carReq.getDiscription(), fuelType, carReq.getKilometersPerLiter());
+        FuelType fuelType = fts.getFuelTypeByName(carReq.getFuel_type_name());
+        Car createdCar = cs.createCar(carReq.getDiscription(), fuelType, carReq.getKilometers_per_liter());
         //車への権限を付与する
         cas.createCarAuth(authenticatedUser, createdCar, true , true);
         //作成した車の情報を一部レスポンスする
@@ -56,11 +57,13 @@ public class CarController {
         //jsonにまとめる
         Map<String, Object> res = new HashMap<>();
         res.put("added_car", createdCarRes);
+
         return ResponseEntity.ok(res);
     }
 
     @GetMapping("/me/cars")
     public ResponseEntity<?> getCarsByAuthenticatedUser(Authentication auth){
+
         User user = us.getAuthenticatedUser(auth);
         List<CarAuth> carAuths = cas.getCarAuthsByUser(user);
         List<CarIndexResponse> carIndexReses = carAuths.stream()
@@ -68,6 +71,7 @@ public class CarController {
                 .collect(Collectors.toList());
         Map<String, Object> res = new HashMap<>();
         res.put("cars", carIndexReses);
+
         return ResponseEntity.ok(res);
     }
 
