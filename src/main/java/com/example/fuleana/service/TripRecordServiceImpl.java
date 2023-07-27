@@ -4,7 +4,9 @@ import com.example.fuleana.entity.*;
 import com.example.fuleana.repository.TripRecordRepository;
 import com.example.fuleana.utility.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotNull;
@@ -19,6 +21,14 @@ public class TripRecordServiceImpl implements TripRecordService{
 
     @Autowired
     TripRecordRepository tripRecordRepository;
+
+    @Override
+    public TripRecord getTripRecordByAlt(String altId) {
+        final String trimmedAltId = altId;
+        TripRecord tripRecord = tripRecordRepository.findByAltId(trimmedAltId)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "TripRecord Not Found with ID : " + trimmedAltId));
+        return tripRecord;
+    }
 
     @Override
     public void createTripRecord(@NotNull Car car,@NotNull Purpose purpose, @NotNull FuelPrice fuelPrice,

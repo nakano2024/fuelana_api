@@ -8,6 +8,8 @@ public interface TripRecordService {
 
     void createTripRecord(Car car, Purpose purpose, FuelPrice fuelPrice, float totalKilometers );
 
+    TripRecord getTripRecordByAlt(String altId);
+
     List<TripRecord> getTripRecordsByCarAndPurposeAndYearAndMonth(Car car, String purposeName, int year, int month);
 
     TripRecordsTotal getTripRecordsTotalByCarAndPurposeAndYearAndMonth(Car car, String purposeName, int year, int month);

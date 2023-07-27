@@ -9,10 +9,11 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class TripRecordResponse {
 
-    private String purpose_name;
-    private float total_yen;
-    private float total_liter;
+    private String tripRecordId;
+    private String purposeName;
+    private float totalYen;
+    private float totalLiter;
     private float kilometers;
-    private Timestamp created_at;
+    private Timestamp createdAt;
 
 }

@@ -48,15 +48,15 @@ public class CarController {
         //認証ユーザーを取得する
         User authenticatedUser = us.getAuthenticatedUser(auth);
         //車を作成する
-        FuelType fuelType = fts.getFuelTypeByName(carReq.getFuel_type_name());
-        Car createdCar = cs.createCar(carReq.getDiscription(), fuelType, carReq.getKilometers_per_liter());
+        FuelType fuelType = fts.getFuelTypeByName(carReq.getFuelTypeName());
+        Car createdCar = cs.createCar(carReq.getDiscription(), fuelType, carReq.getKilometersPerLiter());
         //車への権限を付与する
         cas.createCarAuth(authenticatedUser, createdCar, true , true);
         //作成した車の情報を一部レスポンスする
         CreatedCarResponse createdCarRes = new CreatedCarResponse(createdCar.getAltId());
         //jsonにまとめる
         Map<String, Object> res = new HashMap<>();
-        res.put("added_car", createdCarRes);
+        res.put("addedCar", createdCarRes);
 
         return ResponseEntity.ok(res);
     }
@@ -80,7 +80,8 @@ public class CarController {
         User user = us.getAuthenticatedUser(auth);
         Car car = cs.getCarByAlt(carAltId);
         cas.validateHasAuth(user , car);
-        CarDetailsResponse carDetailsRes = new CarDetailsResponse(car.getDiscription(), car.getFuelType().getName(), car.getKilometersPerLiter());
+        CarDetailsResponse carDetailsRes =
+                new CarDetailsResponse(car.getAltId(), car.getDiscription(), car.getFuelType().getName(), car.getKilometersPerLiter());
         Map<String, Object> res = new HashMap<>();
         res.put("car", carDetailsRes);
         return ResponseEntity.ok(res);

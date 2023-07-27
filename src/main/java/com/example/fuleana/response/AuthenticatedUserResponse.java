@@ -7,10 +7,10 @@ import lombok.Data;
 @AllArgsConstructor
 public class AuthenticatedUserResponse {
 
-    String user_id;
+    String userId;
     String name;
     String email;
-    String role_name;
+    String roleName;
     boolean blocked;
 
 }

@@ -7,10 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class FuleanaApplication {
-
 	public static void main(String[] args) {
 		System.out.println();
 		SpringApplication.run(FuleanaApplication.class, args);
 	}
-
 }

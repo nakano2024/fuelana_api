@@ -7,8 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class TripRecordTotalResponse {
 
-    private float grand_total_yen;
-    private float grand_total_liter;
-    private float grand_total_kilometers;
+    private float grandTotalYen;
+    private float grandTotalLiter;
+    private float grandTotalKilometers;
 
 }

@@ -7,8 +7,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class CarDetailsResponse {
 
+    private String carId;
     private String discription;
-    private String fuel_type_name;
-    private float kilometers_per_liter;
+    private String fuelTypeName;
+    private float kilometersPerLiter;
 
 }

@@ -46,9 +46,9 @@ public class TripRecordController {
         User authenticatedUser = us.getAuthenticatedUser(auth);
         Car requestedCar = cs.getCarByAlt(carAltId);
         cas.validateHasAuth(authenticatedUser, requestedCar);
-        Purpose purpose = ps.getPurposeByName(req.getPurpose_name());
+        Purpose purpose = ps.getPurposeByName(req.getPurposeName());
         FuelPrice fuelPrice = fps.getLatestFuelPriceByFuelType(requestedCar.getFuelType());
-        trs.createTripRecord(requestedCar, purpose, fuelPrice, req.getTotal_kilometers());
+        trs.createTripRecord(requestedCar, purpose, fuelPrice, req.getTotalKilometers());
         return ResponseEntity.ok("");
 
     }
@@ -64,19 +64,23 @@ public class TripRecordController {
         User authenticatedUser = us.getAuthenticatedUser(auth);
         Car requestedCar = cs.getCarByAlt(carAltId);
         cas.validateHasAuth(authenticatedUser, requestedCar);
+
         //各走行データの一覧取得
         List<TripRecord> tripRecords = trs.getTripRecordsByCarAndPurposeAndYearAndMonth(requestedCar ,purposeName ,year, month);
+
         //走行データの合計取得
         TripRecordsTotal tripRecordTotal = trs.getTripRecordsTotalByCarAndPurposeAndYearAndMonth(requestedCar,purposeName , year, month);
+
         //レスポンスデータに変換
         List<TripRecordResponse> tripRecordReses = tripRecords.stream()
-                .map(tr -> new TripRecordResponse(tr.getPurpose().getName(), tr.getTotalYen(), tr.getTotalLiter(), tr.getTotalKilometers(), tr.getCreatedAt()))
+                .map(tr -> new TripRecordResponse(tr.getAltId(), tr.getPurpose().getName(), tr.getTotalYen(), tr.getTotalLiter(), tr.getTotalKilometers(), tr.getCreatedAt()))
                 .collect(Collectors.toList());
         TripRecordTotalResponse tripRecordTotalRes = new TripRecordTotalResponse(tripRecordTotal.getGrandTotalYen(), tripRecordTotal.getGrandTotalLiter(), tripRecordTotal.getGrandTotalKilometers());
+
         //jsonにまとめる
         Map<String, Object> res = new HashMap<>();
-        res.put("trip_records", tripRecordReses);
-        res.put("total", tripRecordTotalRes);
+        res.put("tripRecords", tripRecordReses);
+        res.put("monthlyTotal", tripRecordTotalRes);
         return ResponseEntity.ok(res);
 
     }
@@ -94,12 +98,14 @@ public class TripRecordController {
         Purpose purpose = ps.getPurposeByName(purposeName);
         TripRecordsTotal tripRecordsTotal = trs.getTripRecordsTotalByCarAndPurposeAndYear(requestedCar, purposeName, year);
         //レスポンスデータに変換
-        TripRecordTotalResponse tripRecordTotalRes = new TripRecordTotalResponse(tripRecordsTotal.getGrandTotalYen(), tripRecordsTotal.getGrandTotalLiter(), tripRecordsTotal.getGrandTotalKilometers());
+        TripRecordTotalResponse tripRecordTotalRes =
+                new TripRecordTotalResponse(tripRecordsTotal.getGrandTotalYen(), tripRecordsTotal.getGrandTotalLiter(), tripRecordsTotal.getGrandTotalKilometers());
         //jsonにまとめる
         Map<String , Object> res = new HashMap<>();
-        res.put("total" , tripRecordTotalRes);
+        res.put("annualTotal" , tripRecordTotalRes);
 
         return ResponseEntity.ok(res);
+
     }
 
 }

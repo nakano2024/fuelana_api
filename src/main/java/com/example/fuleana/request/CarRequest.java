@@ -12,10 +12,10 @@ public class CarRequest {
 
     @NotEmpty
     @Pattern(regexp = "REGULAR|HIGH_OCTANE|DIESEL")
-    String fuel_type_name;
+    String fuelTypeName;
 
     @NotNull
     @Min(0)
-    float kilometers_per_liter;
+    float kilometersPerLiter;
 
 }
