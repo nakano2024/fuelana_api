@@ -14,24 +14,30 @@ import java.sql.Timestamp;
 @Entity
 public class TripRecord {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "trip_record_id")
-    private Long tripRecordId;
+    private long tripRecordId;
+
+    @Column(name = "alt_id")
+    private String altId;
 
     @ManyToOne
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @Column(name = "purpose")
-    private String purpose;
+    @ManyToOne
+    @JoinColumn(name = "purpose_id")
+    private Purpose purpose;
 
-    @Column(name = "price")
-    private Float price;
+    @Column(name = "total_yen")
+    private float totalYen;
 
-    @Column(name = "fuel_liter")
-    private Float fuelLiter;
+    @Column(name = "total_liter")
+    private float totalLiter;
 
-    @Column(name = "mileage")
-    private Float mileage;
+    @Column(name = "total_kilometers")
+    private float totalKilometers;
 
     @Column(name = "is_deleted")
     private boolean isDeleted;

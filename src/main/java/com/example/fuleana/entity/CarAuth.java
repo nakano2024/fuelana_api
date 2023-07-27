@@ -15,18 +15,16 @@ import javax.persistence.*;
 public class CarAuth {
 
     @EmbeddedId
+    @Id
     private CarAuthPk carAuthId;
 
-    @ManyToOne
-    @MapsId("userId")
+    @ManyToOne()
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
     @ManyToOne
-    @MapsId("carId")
+    @JoinColumn(name = "car_id", insertable = false, updatable = false)
     private Car car;
-
-    @Column(name = "is_read")
-    private boolean isRead;
 
     @Column(name = "is_write")
     private boolean isWrite;

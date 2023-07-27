@@ -1,6 +1,5 @@
 package com.example.fuleana.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,17 +7,17 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Table(name = "role")
+@Table(name = "purpose")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Role {
+public class Purpose {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
-    private long roleId;
+    @Column(name = "purpose_id")
+    private long purposeId;
 
     @Column(name = "name")
     private String name;

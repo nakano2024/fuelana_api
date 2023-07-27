@@ -18,7 +18,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long userId;
+    private long userId;
 
     @Column(name = "alt_id")
     private String altId;
@@ -47,8 +47,5 @@ public class User {
 
     @Column(name = "updated_at")
     private Timestamp updatedAt;
-
-    @OneToMany(mappedBy = "user")
-    private List<CarAuth> carAuths;
 
 }

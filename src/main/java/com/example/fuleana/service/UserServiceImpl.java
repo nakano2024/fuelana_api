@@ -1,5 +1,7 @@
 package com.example.fuleana.service;
 
+import com.example.fuleana.entity.MyUserDetails;
+import com.example.fuleana.entity.Role;
 import com.example.fuleana.entity.User;
 import com.example.fuleana.repository.UserRepository;
 import com.example.fuleana.request.UserEmailRequest;
@@ -9,10 +11,12 @@ import com.example.fuleana.request.UserRequest;
 import com.example.fuleana.utility.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
@@ -29,7 +33,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public User createUser(@NotNull UserRequest request) {
+    public User createUser(String name , String email , String pswd, @NotNull Role role) {
         User user = new User();
         String altId = "";
         //ランダム文字列で生成されたaltIdによって、ユーザーが取得できる場合、つまりnullでない場合は一意のaltIdではないため、やり直す
@@ -37,9 +41,10 @@ public class UserServiceImpl implements UserService {
             altId = idGenerator.generate().trim();
         }while(userRepository.findByAltId(altId).orElse(null) != null);
         user.setAltId(altId);
-        user.setName(request.getName());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(pswd));
+        user.setRole(role);
         user.setBlocked(false);
         user.setDeleted(false);
         user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
@@ -47,30 +52,45 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getByUserId(Long userId) {
+    public User getUserByPk(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND , "User Not Found with ID :" + userId ));
         return user;
     }
 
     @Override
-    public void updateNameByUserId(Long userId, @NotNull UserNameRequest request) {
+    public User getAuthenticatedUser(@NotNull Authentication auth) {
+        @NotNull MyUserDetails userDetails = auth.getPrincipal() instanceof MyUserDetails?
+                (MyUserDetails)auth.getPrincipal() : null;
+        final String trimmedAltId = userDetails.getAltId().trim();
+        User authenticatedUser = userRepository.findByAltId(trimmedAltId)
+                .orElseThrow(()->new EntityNotFoundException("User Not Found with ID: " + trimmedAltId));
+        return authenticatedUser;
+    }
+
+    @Override
+    public void updateNameByUser(@NotNull User user, String newName) {
+        user.setName(newName);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updateEmailByUser(@NotNull User user, String newEmail) {
+        user.setEmail(newEmail);
+        userRepository.save(user);
 
     }
 
     @Override
-    public void updateEmailByUserId(Long userId, @NotNull UserEmailRequest request) {
-
+    public void updatePswdByUser(@NotNull User user, String newPswd) {
+        user.setPassword(newPswd);
+        userRepository.save(user);
     }
 
     @Override
-    public void updatePasswordByUserId(Long userId, @NotNull UserPswdRequest request) {
-
-    }
-
-    @Override
-    public void deleteUserByUserId(Long userId) {
-
+    public void deleteUserByUser(@NotNull User user) {
+        user.setDeleted(true);
+        userRepository.save(user);
     }
 
 }

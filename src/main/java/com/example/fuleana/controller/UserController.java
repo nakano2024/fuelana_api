@@ -1,11 +1,20 @@
 package com.example.fuleana.controller;
 
+import com.example.fuleana.entity.User;
 import com.example.fuleana.request.UserRequest;
+import com.example.fuleana.response.AuthenticatedUserResponse;
+import com.example.fuleana.service.RoleService;
 import com.example.fuleana.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -13,14 +22,24 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/user/create")
-    public ResponseEntity<?> createUser(@RequestBody UserRequest userRequest){
-        return ResponseEntity.ok(userService.createUser(userRequest));
+    @Autowired
+    RoleService roleService;
+
+    @PostMapping("/user/add")
+    @Transactional
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserRequest req){
+        userService.createUser(req.getName() , req.getEmail() , req.getPassword(), roleService.getRoleByPk(1L));
+        return ResponseEntity.ok("");
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> test(){
-        return ResponseEntity.ok("");
+    public ResponseEntity<?> getAuthenticatedUser(@NotNull Authentication auth){
+        User authUser = userService.getAuthenticatedUser(auth);
+        AuthenticatedUserResponse response =
+                new AuthenticatedUserResponse(authUser.getAltId(), authUser.getName() ,authUser.getEmail(),authUser.getRole().getName(), authUser.isBlocked());
+        Map<String , Object> res = new HashMap<>();
+        res.put("authenticatedUser" , response);
+        return ResponseEntity.ok(res);
     }
 
 }
